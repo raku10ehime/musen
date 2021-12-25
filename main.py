@@ -1,5 +1,6 @@
 import pathlib
 import re
+import shutil
 import urllib.parse
 
 import pandas as pd
@@ -63,7 +64,13 @@ df3 = (
 )
 
 
-p = pathlib.Path("csv", f"{update}.csv")
-p.parent.mkdir(parents=True, exist_ok=True)
+fromPath = pathlib.Path("csv", f"{update}.csv")
+fromPath.parent.mkdir(parents=True, exist_ok=True)
 
-df3.to_csv(str(p), encoding="utf_8_sig")
+# 上書き対策
+if not fromPath.exists():
+
+    df3.to_csv(str(fromPath), encoding="utf_8_sig")
+
+    toPath = pathlib.Path("csv", "latest.csv")
+    shutil.copy(fromPath, toPath)
