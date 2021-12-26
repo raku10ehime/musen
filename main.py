@@ -166,7 +166,7 @@ if update4G == update_mil == update_sub:
 
         api = tweepy.API(auth)
 
-        image_id = api.media_upload("ehime.png").media_id
+        image_id = api.media_upload(str(imgPath)).media_id
 
         twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数"
 
