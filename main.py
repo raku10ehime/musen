@@ -133,7 +133,7 @@ df0 = pd.concat(
     axis=1,
 ).rename_axis("市町村")
 
-df1 = df0.fillna(0).astype(int).reset_index()
+df1 = df0.fillna(0).astype(int)
 
 if update4G == update_mil == update_sub:
 
@@ -146,7 +146,7 @@ if update4G == update_mil == update_sub:
         imgPath = pathlib.Path("img", "table.png")
         imgPath.parent.mkdir(parents=True, exist_ok=True)
 
-        fig = ff.create_table(df1)
+        fig = ff.create_table(df1.reset_index())
         fig.write_image(str(imgPath), engine="kaleido", scale=10)
 
         df1.to_csv(str(fromPath), encoding="utf_8_sig")
