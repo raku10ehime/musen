@@ -36,9 +36,10 @@ jobs:
         git config --local user.name "GitHub Action"
     - name: Commit files
       run: |
-        if (git diff --shortstat | grep '[0-9]'); then \
-          git add .; \
-          git commit -m "Add csv" -a; \
-          git pull; \
-          git push origin main; \
+        git add -N .
+        if ! git diff --exit-code --quiet
+        then
+          git add .
+          git commit -m "Add csv" -a
+          git push
         fi
