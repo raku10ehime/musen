@@ -155,7 +155,6 @@ if update4G == update_mil == update_sub:
         nowFig.write_image(str(nowPath), engine="kaleido", scale=10)
         
         diffPath = pathlib.Path("img", "diff.png")
-        diffPath.parent.mkdir(parents=True, exist_ok=True)
 
         diffFig = ff.create_table(df3.reset_index())
         diffFig.write_image(str(diffPath), engine="kaleido", scale=10)
