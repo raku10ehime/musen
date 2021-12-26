@@ -142,16 +142,26 @@ if update4G == update_mil == update_sub:
 
     # 上書き対策
     if not fromPath.exists():
+        
+        toPath = pathlib.Path("csv", "latest.csv")
+        df2 = pd.read_csv(toPath, index_col=0)
+        
+        df3 = df1 - df2
 
-        imgPath = pathlib.Path("img", "table.png")
-        imgPath.parent.mkdir(parents=True, exist_ok=True)
+        nowPath = pathlib.Path("img", "now.png")
+        nowPath.parent.mkdir(parents=True, exist_ok=True)
 
-        fig = ff.create_table(df1.reset_index())
-        fig.write_image(str(imgPath), engine="kaleido", scale=10)
+        nowFig = ff.create_table(df1.reset_index())
+        nowFig.write_image(str(nowPath), engine="kaleido", scale=10)
+        
+        diffPath = pathlib.Path("img", "diff.png")
+        diffPath.parent.mkdir(parents=True, exist_ok=True)
+
+        diffFig = ff.create_table(df3.reset_index())
+        diffFig.write_image(str(diffPath), engine="kaleido", scale=10)
 
         df1.to_csv(str(fromPath), encoding="utf_8_sig")
 
-        toPath = pathlib.Path("csv", "latest.csv")
         shutil.copy(fromPath, toPath)
 
         # Twitter
@@ -166,8 +176,9 @@ if update4G == update_mil == update_sub:
 
         api = tweepy.API(auth)
 
-        image_id = api.media_upload(str(imgPath)).media_id
+        now_id = api.media_upload(str(nowPath)).media_id
+        diff_id = api.media_upload(str(diffPath)).media_id
 
         twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数"
 
-        api.update_status(status=twit, media_ids=[image_id])
+        api.update_status(status=twit, media_ids=[now_id, diff_id])
