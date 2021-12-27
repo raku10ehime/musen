@@ -154,10 +154,30 @@ if update4G == update_mil == update_sub:
         nowFig = ff.create_table(df1.reset_index())
         nowFig.write_image(str(nowPath), engine="kaleido", scale=10)
         
+        nowFig.update_layout(
+            title={
+                "text": f"{update4G} 現在",
+                "font": {"size": 12},
+                "xanchor": "right",
+                "x": 0.99,
+            },
+            margin={"t": 30},
+        )
+        
         diffPath = pathlib.Path("img", "diff.png")
 
         diffFig = ff.create_table(df3.reset_index())
         diffFig.write_image(str(diffPath), engine="kaleido", scale=10)
+
+        diffFig.update_layout(
+            title={
+                "text": f"{update4G} 現在",
+                "font": {"size": 12},
+                "xanchor": "right",
+                "x": 0.99,
+            },
+            margin={"t": 30},
+        )
 
         df1.to_csv(str(fromPath), encoding="utf_8_sig")
 
