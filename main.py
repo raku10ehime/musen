@@ -152,7 +152,7 @@ if update4G == update_mil == update_sub:
         nowPath.parent.mkdir(parents=True, exist_ok=True)
 
         nowFig = ff.create_table(df1.reset_index())
-        nowFig.write_image(str(nowPath), engine="kaleido", scale=10)
+        nowFig.write_image(str(nowPath), engine="kaleido", scale=2)
         
         nowFig.update_layout(
             title={
@@ -167,7 +167,7 @@ if update4G == update_mil == update_sub:
         diffPath = pathlib.Path("img", "diff.png")
 
         diffFig = ff.create_table(df3.reset_index())
-        diffFig.write_image(str(diffPath), engine="kaleido", scale=10)
+        diffFig.write_image(str(diffPath), engine="kaleido", scale=2)
 
         diffFig.update_layout(
             title={
