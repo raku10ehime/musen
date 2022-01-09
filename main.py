@@ -147,6 +147,19 @@ if update4G == update_mil == update_sub:
         df2 = pd.read_csv(toPath, index_col=0)
         
         df3 = df1 - df2
+        
+        text = "更新なし"
+
+        if df3["マクロ"].sum() > 0:
+
+            sr = df3.loc[df3["マクロ"] > 0, "マクロ"]
+
+            cities = []
+
+            for i, v in sr.items():
+                cities.append(f"{i} {v:+}")
+
+            text = "\n".join(cities)
 
         nowPath = pathlib.Path("img", "now.png")
         nowPath.parent.mkdir(parents=True, exist_ok=True)
@@ -197,6 +210,6 @@ if update4G == update_mil == update_sub:
         now_id = api.media_upload(str(nowPath)).media_id
         diff_id = api.media_upload(str(diffPath)).media_id
 
-        twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数"
+        twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数\n\n{text}"
 
         api.update_status(status=twit, media_ids=[now_id, diff_id])
