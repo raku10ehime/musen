@@ -147,6 +147,7 @@ if update4G == update_mil == update_sub:
         df2 = pd.read_csv(toPath, index_col=0)
         
         df3 = df1 - df2
+        df3.index = df3.index.str.replace("^(越智郡|上浮穴郡|伊予郡|喜多郡|西宇和郡|北宇和郡|南宇和郡)", "", regex=True)
         
         text = "更新なし"
 
