@@ -210,6 +210,6 @@ if update4G == update_mil == update_sub:
         now_id = api.media_upload(str(nowPath)).media_id
         diff_id = api.media_upload(str(diffPath)).media_id
 
-        twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数\n\n{text}"
+        twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数\n\n{text}\n\nhttps://docs.google.com/spreadsheets/d/e/2PACX-1vRE1NoYtNw1FmjRQ8wcdPkcE0Ryeoc2mfFkCQPHjzwL5CpwNKkLXnBl_F7c0LZjrtbLtRLH55ZVi6gQ/pubhtml\n\n#楽天モバイル #愛媛 #基地局"
 
         api.update_status(status=twit, media_ids=[now_id, diff_id])
