@@ -162,55 +162,55 @@ if update4G == update_mil == update_sub:
 
             text = "\n".join(cities)
 
-        nowPath = pathlib.Path("img", "now.png")
-        nowPath.parent.mkdir(parents=True, exist_ok=True)
+            nowPath = pathlib.Path("img", "now.png")
+            nowPath.parent.mkdir(parents=True, exist_ok=True)
 
-        nowFig = ff.create_table(df1.reset_index())
-        nowFig.update_layout(
-            title={
-                "text": f"{update4G} 現在",
-                "font": {"size": 12},
-                "xanchor": "right",
-                "x": 0.99,
-            },
-            margin={"t": 30},
-        )
-        nowFig.write_image(str(nowPath), engine="kaleido", scale=2)
-        
-        diffPath = pathlib.Path("img", "diff.png")
+            nowFig = ff.create_table(df1.reset_index())
+            nowFig.update_layout(
+                title={
+                    "text": f"{update4G} 現在",
+                    "font": {"size": 12},
+                    "xanchor": "right",
+                    "x": 0.99,
+                },
+                margin={"t": 30},
+            )
+            nowFig.write_image(str(nowPath), engine="kaleido", scale=2)
 
-        diffFig = ff.create_table(df3.reset_index())
-        diffFig.update_layout(
-            title={
-                "text": f"{update4G} 現在",
-                "font": {"size": 12},
-                "xanchor": "right",
-                "x": 0.99,
-            },
-            margin={"t": 30},
-        )
+            diffPath = pathlib.Path("img", "diff.png")
 
-        diffFig.write_image(str(diffPath), engine="kaleido", scale=2)
+            diffFig = ff.create_table(df3.reset_index())
+            diffFig.update_layout(
+                title={
+                    "text": f"{update4G} 現在",
+                    "font": {"size": 12},
+                    "xanchor": "right",
+                    "x": 0.99,
+                },
+                margin={"t": 30},
+            )
 
-        df1.to_csv(str(fromPath), encoding="utf_8_sig")
+            diffFig.write_image(str(diffPath), engine="kaleido", scale=2)
 
-        shutil.copy(fromPath, toPath)
+            df1.to_csv(str(fromPath), encoding="utf_8_sig")
 
-        # Twitter
+            shutil.copy(fromPath, toPath)
 
-        consumer_key = os.environ["CONSUMER_KEY"]
-        consumer_secret = os.environ["CONSUMER_SECRET"]
-        access_token = os.environ["ACCESS_TOKEN"]
-        access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
+            # Twitter
 
-        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        auth.set_access_token(access_token, access_token_secret)
+            consumer_key = os.environ["CONSUMER_KEY"]
+            consumer_secret = os.environ["CONSUMER_SECRET"]
+            access_token = os.environ["ACCESS_TOKEN"]
+            access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
 
-        api = tweepy.API(auth)
+            auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+            auth.set_access_token(access_token, access_token_secret)
 
-        now_id = api.media_upload(str(nowPath)).media_id
-        diff_id = api.media_upload(str(diffPath)).media_id
+            api = tweepy.API(auth)
 
-        twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数\n\n{text}\n\nhttps://docs.google.com/spreadsheets/d/e/2PACX-1vTM3Ct_fcPG0JJIGu2ACn9XXws-RkY_lkbqT27-FNMC2n6w8HwCrvQVG0erSEOW0Gc0iMP2BnG4hR_T/pubhtml\n\n#楽天モバイル #愛媛 #基地局"
+            now_id = api.media_upload(str(nowPath)).media_id
+            diff_id = api.media_upload(str(diffPath)).media_id
 
-        api.update_status(status=twit, media_ids=[now_id, diff_id])
+            twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数\n\n{text}\n\nhttps://docs.google.com/spreadsheets/d/e/2PACX-1vTM3Ct_fcPG0JJIGu2ACn9XXws-RkY_lkbqT27-FNMC2n6w8HwCrvQVG0erSEOW0Gc0iMP2BnG4hR_T/pubhtml\n\n#楽天モバイル #愛媛 #基地局"
+
+            api.update_status(status=twit, media_ids=[now_id, diff_id])
