@@ -40,7 +40,7 @@ def musen_api(d):
     ctx.options |= 0x4  # ssl.OP_LEGACY_SERVER_CONNECT
 
     with urllib.request.urlopen(url, context=ctx) as res:
-        json_data = json.loads(res.read().decode("utf-8"))
+        json_data = json.loads(res.read())
 
     return json_data
 
