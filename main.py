@@ -1,12 +1,14 @@
+import json
 import os
 import pathlib
 import re
 import shutil
+import ssl
 import urllib.parse
+import urllib.request
 
 import pandas as pd
 import plotly.figure_factory as ff
-import requests
 import tweepy
 
 rakuten4G = {
@@ -32,9 +34,15 @@ rakuten4G = {
 def musen_api(d):
 
     parm = urllib.parse.urlencode(d, encoding="shift-jis")
-    r = requests.get("https://www.tele.soumu.go.jp/musen/list", parm)
+    url = f"https://www.tele.soumu.go.jp/musen/list?{parm}"
 
-    return r.json()
+    ctx = ssl.create_default_context()
+    ctx.options |= 0x4  # ssl.OP_LEGACY_SERVER_CONNECT
+
+    with urllib.request.urlopen(url, context=ctx) as res:
+        json_data = json.loads(res.read().decode("utf-8"))
+
+    return json_data
 
 
 rakuten5G = {
