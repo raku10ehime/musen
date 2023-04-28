@@ -214,6 +214,6 @@ if update4G == update_mil == update_sub:
 
             twit = f"{update4G}現在\n\n愛媛県の楽天モバイルの基地局数\n\n{text}\n\nhttps://docs.google.com/spreadsheets/d/e/2PACX-1vTM3Ct_fcPG0JJIGu2ACn9XXws-RkY_lkbqT27-FNMC2n6w8HwCrvQVG0erSEOW0Gc0iMP2BnG4hR_T/pubhtml\n\n#楽天モバイル #愛媛 #基地局"
 
-            api.update_status(status=twit, media_ids=[now_id, diff_id])            client = tweepy.Client(
+            client = tweepy.Client(
                 bearer_token, consumer_key, consumer_secret, access_token, access_token_secret
             )
