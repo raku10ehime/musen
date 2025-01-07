@@ -3,13 +3,14 @@ import os
 import pathlib
 import re
 import shutil
-import ssl
-import urllib.parse
-import urllib.request
 
 import pandas as pd
 import plotly.figure_factory as ff
 import tweepy
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"
+}
 
 rakuten4G = {
     # 1:免許情報検索  2: 登録情報検索
@@ -33,16 +34,14 @@ rakuten4G = {
 
 def musen_api(d):
 
-    parm = urllib.parse.urlencode(d, encoding="shift-jis")
-    url = f"https://www.tele.soumu.go.jp/musen/list?{parm}"
+    d["IT"] = it
 
-    ctx = ssl.create_default_context()
-    ctx.options |= 0x4  # ssl.OP_LEGACY_SERVER_CONNECT
+    r = requests.get("https://www.tele.soumu.go.jp/musen/list", params=d, headers=headers)
+    r.raise_for_status()
 
-    with urllib.request.urlopen(url, context=ctx) as res:
-        json_data = json.loads(res.read())
+    time.sleep(1)
 
-    return json_data
+    return r.json()
 
 
 rakuten5G = {
@@ -83,14 +82,14 @@ def select5G(d, start, end, unit):
 
 def fetch_cities(s):
 
-    lst = re.findall("(\S+)\(([0-9,]+)\)", s)
+    lst = re.findall("(\S+)\s*\(([0-9,]+)\)", s)
 
     df0 = pd.DataFrame(lst, columns=["name", "count"])
     df0["count"] = df0["count"].str.strip().str.replace(",", "").astype(int)
 
     flag = df0["name"].str.endswith(("都", "道", "府", "県"))
 
-    df0["pref"] = df0["name"].where(flag).fillna(method="ffill")
+    df0["pref"] = df0["name"].where(flag).ffill()
 
     df1 = df0[(df0["pref"] == "愛媛県") & (df0["name"] != "愛媛県")].copy().set_index("name")
 
