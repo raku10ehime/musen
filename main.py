@@ -4,6 +4,7 @@ import pathlib
 import re
 import shutil
 import requests
+import time
 
 import pandas as pd
 import plotly.figure_factory as ff
