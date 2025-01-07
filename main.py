@@ -34,8 +34,6 @@ rakuten4G = {
 
 def musen_api(d):
 
-    d["IT"] = it
-
     r = requests.get("https://www.tele.soumu.go.jp/musen/list", params=d, headers=headers)
     r.raise_for_status()
 
